@@ -7,10 +7,8 @@ class NewsItem extends Component {
     handleChange(event) {
         const target = event.target;
         const name = target.name;
-        console.log(target.value)
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        console.log(name, value);
-        this.props.onChange(name, value);
+        this.props.onChange(this.props.data.id, value);
     }
 
     ondRemove() {
@@ -36,30 +34,27 @@ class NewsItem extends Component {
 }
 
 class News extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { news: props.news }
-    }
-    updatedNews(news, name, value) {
-        news[name] = value;
-        console.log(this.state.news)
-        this.setState({ news: this.state.news });
-        this.props.onChange(this.state.news);
+    updatedNews(id, name, value) {
+        let news = this.props.news;
+        news = news.map(element => {
+            if (element.id === id)
+                element[name] = value;
+            return element
+        });
+        this.props.onChange(news);
     }
 
     addNews() {
-        // this.setState({ news: [...this.state.news, { id: uuidv1() }] });
-        this.props.onChange( [...this.state.news, { id: uuidv1() }]);
+        this.props.onChange([...this.props.news, { id: uuidv1() }]);
     }
 
     removeNews(id) {
-        let news = this.state.news.filter((i) => i.id !== id);
-        this.setState({news: news});
+        let news = this.props.news.filter((i) => i.id !== id);
         this.props.onChange(news);
     }
 
     render() {
-        let items = this.state.news.map((news) => <NewsItem key={news.id} data={news} onChange={this.updatedNews.bind(this, news)} onRemove={this.removeNews.bind(this)} />);
+        let items = this.props.news.map((news) => <NewsItem key={news.id} data={news} onChange={this.updatedNews.bind(this)} onRemove={this.removeNews.bind(this)} />);
         return (
             <div>
                 {items}
