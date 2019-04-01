@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import News from './News';
+import Packages from './Packages';
 const uuidv1 = require('uuid/v1');
 
 class App extends Component {
@@ -19,7 +20,11 @@ class App extends Component {
           i.date = new Date(Date(i.date)).toISOString();
           i.date = i.date.substring(0, i.date.length - 1);
           return i;
-        })
+        });
+        data.list = data.list.map((i) => {
+          i.id = uuidv1();
+          return i;
+        });
 
         this.setState({ data: data });
       } catch (error) {
@@ -65,12 +70,20 @@ class App extends Component {
     this.setState({ data: data });
   }
 
+  onChangeList(list) {
+    let data = this.state.data;
+    data.list = list;
+    this.setState({ data: data });
+  }
+
   render() {
     let news;
     let downloadBtn;
+    let packages;
     if (this.state.data) {
       news = <News news={this.state.data.news} onChange={this.onChangeNews.bind(this)} />
       downloadBtn = <button onClick={this.generateJson.bind(this)}>Generate JSON</button>
+      packages = <Packages list={this.state.data.list} onChange={this.onChangeList.bind(this)} />
     }
     return (
       <div className="App">
@@ -82,6 +95,10 @@ class App extends Component {
         </div>
         <div className='loadedData'>
           {news}
+          {packages}
+        </div>
+        <div className="version">
+          <input type='text' id=''></input>
         </div>
       </div>
     );
