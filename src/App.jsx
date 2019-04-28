@@ -76,14 +76,32 @@ class App extends Component {
     this.setState({ data: data });
   }
 
+  onChangeVersion(version) {
+    let data = this.state.data;
+    data.version.num = version;
+    this.setState({ data: data});
+  }
+
+  onChangeVersionUrl(url) {
+    let data = this.state.data;
+    data.version.href = url;
+    this.setState({ data: data});
+  }
+
   render() {
     let news;
     let downloadBtn;
     let packages;
+    let ver;
     if (this.state.data) {
       news = <News news={this.state.data.news} onChange={this.onChangeNews.bind(this)} />
       downloadBtn = <button onClick={this.generateJson.bind(this)}>Generate JSON</button>
       packages = <Packages list={this.state.data.list} onChange={this.onChangeList.bind(this)} />
+      ver = <div className="version">
+        <span>version:</span><input type='text' id='version' value={this.state.data.version.href} onChange={this.onChangeVersion.bind(this)}></input>
+        <br></br>
+        <span>URL:</span><input type='text' id='url' value={this.state.data.version.href} onChange={this.onChangeVersionUrl.bind(this)}></input>
+      </div>
     }
     return (
       <div className="App">
@@ -96,10 +114,9 @@ class App extends Component {
         <div className='loadedData'>
           {news}
           {packages}
+          {ver}
         </div>
-        <div className="version">
-          <input type='text' id=''></input>
-        </div>
+
       </div>
     );
   }
