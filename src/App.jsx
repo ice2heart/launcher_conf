@@ -98,7 +98,7 @@ class App extends Component {
       downloadBtn = <button onClick={this.generateJson.bind(this)}>Generate JSON</button>
       packages = <Packages list={this.state.data.list} onChange={this.onChangeList.bind(this)} />
       ver = <div className="version">
-        <span>version:</span><input type='text' id='version' value={this.state.data.version.href} onChange={this.onChangeVersion.bind(this)}></input>
+        <span>version:</span><input type='text' id='version' value={this.state.data.version.num} onChange={this.onChangeVersion.bind(this)}></input>
         <br></br>
         <span>URL:</span><input type='text' id='url' value={this.state.data.version.href} onChange={this.onChangeVersionUrl.bind(this)}></input>
       </div>
